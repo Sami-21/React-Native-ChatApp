@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Box,
@@ -21,7 +21,7 @@ const Feed: React.FC<any> = ({ navigation }) => {
   const { colors } = useTheme();
   const colorScheme = Appearance.getColorScheme();
   const [bgColor, setBgColor] = useState<string>(
-    colorScheme === "dark" ? colors.dark[100] : colors.dark[100]
+    colorScheme === "dark" ? colors.dark[100] : colors.light[100]
   );
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [chats, setChats] = useState<any[]>([
@@ -144,16 +144,21 @@ const Feed: React.FC<any> = ({ navigation }) => {
     },
   ]);
 
+  useEffect(() => {
+    colorScheme === "dark"
+      ? setBgColor(colors.dark[100])
+      : setBgColor(colors.light[100]);
+  }, [colorScheme]);
+
   const translateY = new Animated.Value(0);
   const diffClampTranslateY = Animated.diffClamp(translateY, 0, HEADER_HEIGHT);
+
   const headerY = diffClampTranslateY.interpolate({
     inputRange: [0, HEADER_HEIGHT],
     outputRange: [0, -HEADER_HEIGHT],
   });
 
   const scrollHandler = (nativeEvent: any) => {
-    console.log(translateY);
-
     translateY.setValue(nativeEvent.contentOffset.y);
   };
 
