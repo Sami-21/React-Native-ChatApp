@@ -1,7 +1,7 @@
 import React from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import Profile from "./Profile";
-import Chats from "./Chats/Index";
+import People from "./PeopleScreens/Index";
 import Home from "./HomeScreens/Index";
 import Camera from "./Camera";
 import Games from "./Games";
@@ -38,8 +38,8 @@ const Index: React.FC = () => {
             />
           ),
         }}
-        name="Chats"
-        component={Chats}
+        name="People"
+        component={People}
       />
       <Tab.Screen
         options={{

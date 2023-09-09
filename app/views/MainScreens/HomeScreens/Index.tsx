@@ -14,7 +14,7 @@ const Index: React.FC = () => {
       <Tab.Screen name="Messages" component={Messages} />
       <Tab.Screen name="Active" component={Active} />
       <Tab.Screen name="Groups" component={Groups} />
-      <Tab.Screen name="Calls" component={Calls} />
+      {/* <Tab.Screen name="Calls" component={Calls} /> */}
     </Tab.Navigator>
   );
 };
