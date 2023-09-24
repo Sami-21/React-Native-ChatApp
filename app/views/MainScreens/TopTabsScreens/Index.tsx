@@ -8,7 +8,7 @@ import Calls from "./Calls";
 
 const Tab = createMaterialTopTabNavigator();
 
-const Index: React.FC = () => {
+const Index: React.FC<any> = ({ navigation, routes }) => {
   return (
     <Tab.Navigator>
       <Tab.Screen name="Messages" component={Messages} />

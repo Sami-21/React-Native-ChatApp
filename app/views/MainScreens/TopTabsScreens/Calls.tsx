@@ -15,7 +15,7 @@ import {
 } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
 
-const Messages: React.FC<any> = ({ navigation }) => {
+const Calls: React.FC<any> = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [chats, setChats] = useState<any[]>([
     {
@@ -167,7 +167,7 @@ const Messages: React.FC<any> = ({ navigation }) => {
           renderItem={({ item }) => (
             <Pressable
               onPress={() => {
-                navigation?.navigate("Chat room");
+                navigation?.navigate("Chat room", { targetUser: item });
               }}
             >
               <Box
@@ -186,7 +186,9 @@ const Messages: React.FC<any> = ({ navigation }) => {
                     source={{
                       uri: item.avatarUrl,
                     }}
-                  />
+                  >
+                    <Avatar.Badge size={4} bg="green.500"></Avatar.Badge>
+                  </Avatar>
                   <VStack pl={4}>
                     <Text
                       _dark={{
@@ -197,26 +199,7 @@ const Messages: React.FC<any> = ({ navigation }) => {
                     >
                       {item.fullName}
                     </Text>
-                    <Text
-                      color="coolGray.600"
-                      _dark={{
-                        color: "warmGray.200",
-                      }}
-                    >
-                      {item.recentText}
-                    </Text>
                   </VStack>
-                  <Spacer />
-                  <Text
-                    fontSize="xs"
-                    _dark={{
-                      color: "warmGray.50",
-                    }}
-                    color="coolGray.800"
-                    alignSelf="flex-start"
-                  >
-                    {item.timeStamp}
-                  </Text>
                 </HStack>
               </Box>
             </Pressable>
@@ -228,4 +211,4 @@ const Messages: React.FC<any> = ({ navigation }) => {
   );
 };
 
-export default Messages;
+export default Calls;

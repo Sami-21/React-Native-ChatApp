@@ -1,21 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Box,
-  Center,
   FlatList,
   HStack,
   Icon,
   Input,
   Pressable,
-  Spacer,
   Text,
   VStack,
   View,
+  useTheme,
 } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
+import { Animated, Appearance, StyleSheet } from "react-native";
 
-const Active: React.FC<any> = ({ navigation }) => {
+const HEADER_HEIGHT = 75;
+
+const People: React.FC<any> = ({ navigation }) => {
+  const { colors } = useTheme();
+  const colorScheme = Appearance.getColorScheme();
+  const [bgColor, setBgColor] = useState<string>(
+    colorScheme === "dark" ? colors.dark[100] : colors.light[100]
+  );
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [chats, setChats] = useState<any[]>([
     {
@@ -137,13 +144,38 @@ const Active: React.FC<any> = ({ navigation }) => {
     },
   ]);
 
+  useEffect(() => {
+    colorScheme === "dark"
+      ? setBgColor(colors.dark[100])
+      : setBgColor(colors.light[100]);
+  }, [colorScheme]);
+
+  const translateY = new Animated.Value(0);
+  const diffClampTranslateY = Animated.diffClamp(translateY, 0, HEADER_HEIGHT);
+
+  const headerY = diffClampTranslateY.interpolate({
+    inputRange: [0, HEADER_HEIGHT],
+    outputRange: [0, -HEADER_HEIGHT],
+  });
+
+  const scrollHandler = (nativeEvent: any) => {
+    translateY.setValue(nativeEvent.contentOffset.y);
+  };
+
   return (
     <Box flex={1}>
-      <HStack w={"full"} pt={2.5} px={4}>
+      <Animated.View
+        style={[
+          styles.searchBar,
+          {
+            transform: [{ translateY: headerY }],
+            backgroundColor: bgColor,
+          },
+        ]}
+      >
         <Input
           pl={4}
           rounded={"full"}
-          flex={1}
           value={searchQuery}
           onChangeText={(value) => setSearchQuery(value)}
           placeholder="Search"
@@ -157,10 +189,13 @@ const Active: React.FC<any> = ({ navigation }) => {
             />
           }
         />
-      </HStack>
-
-      <VStack flex={1} mt={4}>
+      </Animated.View>
+      <VStack flex={1}>
         <FlatList
+          style={{ paddingTop: HEADER_HEIGHT }}
+          onScroll={({ nativeEvent }) => scrollHandler(nativeEvent)}
+          bounces={false}
+          scrollEventThrottle={20}
           showsVerticalScrollIndicator={false}
           ItemSeparatorComponent={() => <View h={5} />}
           data={chats}
@@ -211,4 +246,20 @@ const Active: React.FC<any> = ({ navigation }) => {
   );
 };
 
-export default Active;
+const styles = StyleSheet.create({
+  searchBar: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: HEADER_HEIGHT,
+    paddingHorizontal: 15,
+    zIndex: 100,
+    elevation: 5,
+    flex: 1,
+    alignContent: "center",
+    justifyContent: "center",
+  },
+});
+
+export default People;

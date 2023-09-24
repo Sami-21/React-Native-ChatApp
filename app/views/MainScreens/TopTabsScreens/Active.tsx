@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Avatar,
   Box,
@@ -17,7 +17,7 @@ import { Animated, Appearance, StyleSheet } from "react-native";
 
 const HEADER_HEIGHT = 75;
 
-const Feed: React.FC<any> = ({ navigation }) => {
+const Active: React.FC<any> = ({ navigation }) => {
   const { colors } = useTheme();
   const colorScheme = Appearance.getColorScheme();
   const [bgColor, setBgColor] = useState<string>(
@@ -190,6 +190,7 @@ const Feed: React.FC<any> = ({ navigation }) => {
           }
         />
       </Animated.View>
+
       <VStack flex={1}>
         <FlatList
           style={{ paddingTop: HEADER_HEIGHT }}
@@ -202,7 +203,7 @@ const Feed: React.FC<any> = ({ navigation }) => {
           renderItem={({ item }) => (
             <Pressable
               onPress={() => {
-                navigation?.navigate("Chat room");
+                navigation?.navigate("Chat room", { targetUser: item });
               }}
             >
               <Box
@@ -255,11 +256,11 @@ const styles = StyleSheet.create({
     height: HEADER_HEIGHT,
     paddingHorizontal: 15,
     zIndex: 100,
-    elevation: 100,
+    elevation: 5,
     flex: 1,
     alignContent: "center",
     justifyContent: "center",
   },
 });
 
-export default Feed;
+export default Active;
